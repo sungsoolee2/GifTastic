@@ -41,7 +41,8 @@
 
             // displayMovieInfo function re-renders the HTML to display the appropriate content
             function displayAnimalInfo() {
-
+            // clear animals view div //
+                $("#animals-view").empty();
                 var animal = $(this).attr("data-name");
                 var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
                     animal + "&api_key=Gk6ayLoOXHYVYrvTFZLkUUIAZzMGPpGw&limit=10";
@@ -53,7 +54,7 @@
                 }).then(function (response) {
                     //set variable results to pulls data from api hit    
                     var results = response.data;
-
+                    console.log(results);
                     //create loop to display animals from api hit
                     for (var i = 0; i < results.length; i++) {
 
@@ -68,10 +69,21 @@
 
                         // Creating an element to hold the image
 
-                        var animalImage = $("<img>");
+                        // var animalImage = $("<img>");
 
-                        // Retrieving the URL and  for the image and assigning the image to src
-                        animalImage.attr("src", results[i].images.fixed_height.url);
+                        // // Retrieving the URL and  for the image and assigning the image to src
+                        // animalImage.attr("src", results[i].images.fixed_height.url);
+                        // Retrieving the URL for the image
+                        var imganimateURL = results[i].images.fixed_height.url
+                        var datastate = $("data-state");
+                        datastate.append("animate");
+                        var imgstillURL = results[i].images.fixed_height_still.url
+                        datastate.append("still")
+
+
+                        // Creating an element to hold the image
+                        var animalImage = $("<img data-animate>").attr("src", imganimateURL);
+                        
 
                         // Displaying the rating
                         animalDiv.append(p);
@@ -79,11 +91,14 @@
                         // Appending the image          
                         animalDiv.append(animalImage);
 
+                        
+                       
+
                         // Putting the animals above the animal movies
                         $("#animals-view").append(animalDiv);
 
                     }
-
+                    
                     });
 
 
@@ -139,34 +154,34 @@
             renderButtons();
 
 
-//       $(".gif").on("click", function() {
+      $(".gif").on("click", function() {
 
-//       // STEP TWO: make a variable named state and then store the image's data-state into it.
-//       // Use the .attr() method for this.
-// var state = $(this).attr("data-state");
+      // STEP TWO: make a variable named state and then store the image's data-state into it.
+      // Use the .attr() method for this.
+var state = $(this).attr("data-state");
 
-//       // STEP THREE: Check if the variable state is equal to 'still',
-//       // then update the src attribute of this image to it's data-animate value,
-//       // and update the data-state attribute to 'animate'.
+      // STEP THREE: Check if the variable state is equal to 'still',
+      // then update the src attribute of this image to it's data-animate value,
+      // and update the data-state attribute to 'animate'.
 
-//       // If state is equal to 'animate', then update the src attribute of this
-//       // image to it's data-still value and update the data-state attribute to 'still'
+      // If state is equal to 'animate', then update the src attribute of this
+      // image to it's data-still value and update the data-state attribute to 'still'
 
-// if (state ==="still")
-// {
-//   var animate=$(this).attr("data-animate");
-//   $(this).attr("src",animate)
-// $(this).attr("data-state","animate")
+if (state ==="still")
+{
+  var animate=$(this).attr("data-animate");
+  $(this).attr("src",animate)
+$(this).attr("data-state","animate")
 
-// }
+}
 
-//       else 
-// {var still=$(this).attr("data-still");
-//   $(this).attr("src",still);
-// $(this).attr("data-state","still");
+      else 
+{var still=$(this).attr("data-still");
+  $(this).attr("src",still);
+$(this).attr("data-state","still");
 
-// }
-//     });
+}
+    });
 
         </script>
     </div>
