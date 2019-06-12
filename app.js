@@ -1,15 +1,16 @@
- // Initial array of movies
+ // Initial array of animals
  var topics = ["tiger", "fox", "chicken", "turtle", "pengiun", "kanagaroo", "rabbit", "zebra", "pig", "horse"];
 
- // displayMovieInfo function re-renders the HTML to display the appropriate content
+ // displayAnimalInfo function re-renders the HTML to display the appropriate content
  function displayAnimalInfo() {
  // clear animals view div //
      $("#animals-view").empty();
+    
      var animal = $(this).attr("data-name");
      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
          animal + "&api_key=Gk6ayLoOXHYVYrvTFZLkUUIAZzMGPpGw&limit=10";
 
-     // Creating an AJAX call for the specific movie button being clicked
+     // Creating an AJAX call for the specific animal button being clicked
      $.ajax({
          url: queryURL,
          method: "GET"
