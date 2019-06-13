@@ -19,7 +19,7 @@
     <div class="container">
         <h1>Animal Buttons</h1>
 
-        <!-- Rendered Buttons will get Dumped Here  -->
+        <!-- Rendered animal buttons displayed here  -->
         <div id="buttons-view"></div>
 
         <form id="animal-btn-form">
@@ -31,8 +31,8 @@
             <input id="add-animal" type="submit" value="SUBMIT">
         </form>
 
-        <!-- Animals will Get Dumped Here -->
-        <div  id="animals-view"></div>
+        <!-- // Animals displayed here -->
+        <div id="animals-view"></div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script type="text/javascript">
@@ -43,10 +43,10 @@
 
             // displayAnimalInfo function re-renders the HTML to display the appropriate content
             function displayAnimalInfo() {
-                
-                // clear animals view div //
+
+                // clear animals  //
                 $("#animals-view").empty();
-               
+
                 var animal = $(this).attr("data-name");
                 var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
                     animal + "&api_key=Gk6ayLoOXHYVYrvTFZLkUUIAZzMGPpGw&limit=10";
@@ -58,39 +58,29 @@
                 }).then(function (response) {
                     //set variable results to pulls data from api hit    
                     var results = response.data;
-                    console.log(results);
-                    
+
+                    // console.log(results);
+
                     //create loop to display animals from api hit
                     for (var i = 0; i < results.length; i++) {
 
-                        // Creating a div to hold the animal gify       
-                        var animalDiv = $("<div>");
-
-                        // Storing the rating data
-                        var rating = results[i].rating;
-
                         // Creating an element to have the rating displayed
-                        var p = $("<p>").text("Rating: " + rating);
-                        // add  the rating to animalDiv
-                        animalDiv.append(p);
+                        var p = $("<p>").text("Rating: " + results[i].rating);
 
-                        console.log(rating);
+                        // show rating to DOM//   
+                        $("#animals-view").append(p);
 
-                        //display rating //
-                        $("#animals-view").append(animalDiv);
+                        // assigning var image with img tags ,data-still ,data-animate data-state 
+                        //and gif class with links for still and animate URLS//    
                         
+                        var image = "<img src=' " + results[i].images.fixed_height_still.url +
+                            " 'data-still='" + results[i].images.fixed_height_still.url +
+                            " 'data-animate='" + results[i].images.fixed_height.url + " 'data-state='still' class='gif'>";
 
-            
-                        // appending animals view with img tags data-still , data-state and gif link for still//    
                         // Putting the animals above the previous animals
-                         $("#animals-view").append($("<img>" ,{id:'data-still',src: results[i].images.fixed_height_still.url}));
-                         $("#animals-view").append($("<img>" ,{class: 'gif'}));
-                        
-                        // data -animate tags and URL//
-                        //  $("#animals-view").append($("<img>" ,{id:'data',src: results[i].images.fixed_height.url},{id: 'data-state'}));
-                        $(this).attr("data-state", "still");
-                        console.log(this);
-                        // $(animalDiv).addClass("gif");
+                        $("#animals-view").append(image);
+
+
                     }
                 });
             }
@@ -139,47 +129,44 @@
                 renderButtons();
             });
 
+
             // Adding a click event listener to all elements with a class of "animal-btn"
             $(document).on("click", ".animal-btn", displayAnimalInfo);
+
 
             // Calling the renderButtons function to display the intial buttons
             renderButtons();
 
-            // $(".gif").on("click", function () {
-
-             //Adding a click event listener to all elements with a class of ".gif"
-            $(document).on("click", "gif", function () {
+            
+            
+            //Adding a click event listener to all elements with a class of ".gif"
+            $(document).on("click", ".gif", function () {
 
 
                 //  created temp variable named state and then store the image's data-state into it.
 
                 var state = $(this).attr("data-state");
-                console.log(state);
-               
+                // console.log(state);
+
                 // Check if the variable state is equal to 'still',
-                //  assign data-animate attribute with the animate image Gif url
+                
                 //  update the src attribute of this image to it's data-animate value,
                 //  update the data-state attribute to 'animate'.
 
                 if (state === "still") {
-                    
-                   var imgURL= this.images.fixed_height.url;
-                    var animate = $(this).attr("data-animate", imgURL);
-                    console.log(animate);
-                    $(this).attr("src", animate)
-                    $(this).attr("data-state", "animate")
+
+                    $(this).attr('src', $(this).attr("data-animate"));
+                    $(this).attr('data-state', 'animate');
 
                 }
                 // If state is equal to 'animate', 
-                //  assign data-still attribute with the still image Gif url
+               
                 // update the src attribute of this image to it's data-still value
                 //  update dthe data-state attribute to 'still'
                 else {
-                    var imgURL=this.images.fixed_height_still.url;
-                    var still = $(this).attr("data-still", imgURL);
-                    console.log(still);
-                    $(this).attr("src", still);
-                    $(this).attr("data-state", "still");
+
+                    $(this).attr('src', $(this).attr("data-still"));
+                    $(this).attr('data-state', 'still');
 
                 }
             });
